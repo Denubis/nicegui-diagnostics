@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nicegui-diagnostics"
+version = "0.0.0"
+description = "Runtime diagnostics endpoint and UI element for NiceGUI applications"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "evnchn" },
+]
+keywords = ["nicegui", "diagnostics", "observability", "health", "memory", "asyncio"]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Debuggers",
+    "Topic :: System :: Monitoring",
+]
+
+# Pin floor is 3.10.0 -- required for #5931 (timer leak) and GHSA-w8wv-vfpc-hw2w
+# (upload sanitization). See docs/design/leak-pr-provenance.md.
+dependencies = [
+    "nicegui>=3.10.0",
+]
+
+[project.optional-dependencies]
+structlog = ["structlog>=24.0"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.6",
+    "mypy>=1.10",
+]
+
+[project.urls]
+Homepage = "https://github.com/evnchn-nicegui/nicegui-diagnostics"
+"Upstream PR" = "https://github.com/zauberzeug/nicegui/pull/5867"
+"Origin discussion" = "https://github.com/zauberzeug/nicegui/discussions/5660"
+"Project board" = "https://github.com/orgs/evnchn-nicegui/projects/1"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nicegui_diagnostics"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/nicegui_diagnostics",
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+]
+exclude = [
+    "reference/",
+    "docs/",
+    "tests/",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
