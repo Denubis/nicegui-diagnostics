@@ -1,0 +1,45 @@
+repos:
+  # Ruff: lint with autofix, then format
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.9
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  # Type checking — mypy (the staging repo's choice, per pyproject.toml dev deps)
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+        additional_dependencies: ['nicegui>=3.10.0']
+        files: ^src/
+
+  # Cognitive complexity gate — blocks commits with functions > 15
+  # Mirrors PromptGrimoireTool's threshold. Starts clean (no grandfathered
+  # excludes) since src/ is empty. Add specific paths to the exclude pattern
+  # only when accompanied by a tracking issue.
+  - repo: https://github.com/rohaquinlop/complexipy-pre-commit
+    rev: v5.1.0
+    hooks:
+      - id: complexipy
+        args: ['--max-complexity-allowed=15']
+        exclude: '^(tests/|reference/)'
+
+  # Secret scanning — blocks commits containing API keys, tokens, credentials
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1
+    hooks:
+      - id: gitleaks
+
+  # General pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
