@@ -12,6 +12,11 @@ venv/
 .mypy_cache/
 .ruff_cache/
 .complexipy_cache/
+
+# .notes/ — durable agent-readable observations per the project's
+# notes scheme (frontmatter + free-form markdown). Local to this
+# working copy; never published upstream.
+.notes/
 .idea/
 .vscode/
 *.swp
